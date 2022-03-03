@@ -1,0 +1,9 @@
+name: OwnWorlds
+version: 0.0.1
+api-version: 1.18
+main: de.alpharout.ownworlds.OwnWorlds
+
+authors:
+  - alphaR0ut
+  - CraftAgain
+website: fiverr.com/alphar0ut
