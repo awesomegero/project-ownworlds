@@ -16,6 +16,8 @@ public class OwnWorlds extends JavaPlugin {
         CONFIGMANAGER = new ConfigManager();
 
         CONFIGMANAGER.load();
+
+        this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
     }
 
     @Override
