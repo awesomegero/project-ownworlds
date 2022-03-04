@@ -1,3 +1,10 @@
 switcher:
   item: ARROW
   name: "&7» &cSwitcher"
+visibility-toggler:
+  item: CLOCK
+  name: "&7» &aToggle Visibility &7[No Status Yet]"
+join-public-world:
+  item: SPYGLASS
+  name: "&7» &bJoin Public World"
+join-private-world:
