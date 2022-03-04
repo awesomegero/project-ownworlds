@@ -14,12 +14,18 @@ repositories {
             includeGroup 'org.bukkit'
             includeGroup 'org.spigotmc'
         }
+    }
+
+    maven {
+        url = 'https://repo.opencollab.dev/maven-snapshots/'
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+    compileOnly 'org.geysermc.floodgate:api:2.0-SNAPSHOT'
 }
-}
+
 
 test {
     useJUnitPlatform()

@@ -3,8 +3,6 @@ package de.alpharout.ownworlds;
 import de.alpharout.ownworlds.listener.DropListener;
 import de.alpharout.ownworlds.listener.JoinListener;
 import de.alpharout.ownworlds.utils.ConfigManager;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class OwnWorlds extends JavaPlugin {
