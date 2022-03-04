@@ -1,5 +1,6 @@
 package de.alpharout.ownworlds;
 
+import de.alpharout.ownworlds.listener.DropListener;
 import de.alpharout.ownworlds.listener.JoinListener;
 import de.alpharout.ownworlds.utils.ConfigManager;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ public class OwnWorlds extends JavaPlugin {
         CONFIGMANAGER.load();
 
         this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new DropListener(), this);
     }
 
     @Override
