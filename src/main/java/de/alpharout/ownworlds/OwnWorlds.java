@@ -2,8 +2,7 @@ package de.alpharout.ownworlds;
 
 import de.alpharout.ownworlds.api.ItemComponent;
 import de.alpharout.ownworlds.api.gui.View;
-import de.alpharout.ownworlds.components.SwitcherComponent;
-import de.alpharout.ownworlds.components.VisibilityToggleComponent;
+import de.alpharout.ownworlds.components.*;
 import de.alpharout.ownworlds.listener.DropListener;
 import de.alpharout.ownworlds.listener.InteractListener;
 import de.alpharout.ownworlds.listener.InventoryClickListener;
@@ -33,6 +32,11 @@ public class OwnWorlds extends JavaPlugin {
 
         ItemComponent.addComponent("switcher", new SwitcherComponent("switcher"));
         ItemComponent.addComponent("visibility-toggler", new VisibilityToggleComponent("visibility-toggler"));
+        ItemComponent.addComponent("join-public-world", new JoinPublicWorldComponent("join-public-world"));
+        ItemComponent.addComponent("join-private-world", new JoinPrivateWorldComponent("join-private-world"));
+        ItemComponent.addComponent("join-own-world", new JoinOwnWorldComponent("join-own-world"));
+        ItemComponent.addComponent("create-world", new CreateWorldComponent("create-world"));
+        ItemComponent.addComponent("white-filler", new WhiteFillerComponent("white-filler"));
 
         View.addView("main", new MainView());
     }

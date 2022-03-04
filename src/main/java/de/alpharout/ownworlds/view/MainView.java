@@ -8,8 +8,9 @@ import java.util.HashMap;
 public class MainView extends View {
     @Override
     public HashMap<Integer, ItemComponent> getComponentMap() {
-        addComponent(12, ItemComponent.getItemComponent("switcher"));
-        addComponent(14, ItemComponent.getItemComponent("visibility-toggler"));
+        addComponent(11, ItemComponent.getItemComponent("join-public-world"));
+        addComponent(15, ItemComponent.getItemComponent("join-private-world"));
+        addComponent(13, ItemComponent.getItemComponent("join-own-world"));
 
         return super.getComponentMap();
     }

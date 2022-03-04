@@ -5,6 +5,17 @@ visibility-toggler:
   item: CLOCK
   name: "&7» &aToggle Visibility &7[No Status Yet]"
 join-public-world:
-  item: SPYGLASS
+  item: COMPASS
   name: "&7» &bJoin Public World"
 join-private-world:
+  item: SPYGLASS
+  name: "&7» &cJoin Private World"
+join-own-world:
+  item: NAME_TAG
+  name: "&7» &6Join Your World"
+create-world:
+  item: HONEY_BOTTLE
+  name: "&7» &5Create New World"
+white-filler:
+  item: WHITE_STAINED_GLASS_PANE
+  name: "&7&ka"

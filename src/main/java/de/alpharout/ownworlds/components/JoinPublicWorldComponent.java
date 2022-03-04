@@ -6,8 +6,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class VisibilityToggleComponent extends ItemComponent {
-    public VisibilityToggleComponent(String name) {
+public class JoinPublicWorldComponent extends ItemComponent {
+    public JoinPublicWorldComponent(String name) {
         super(name);
     }
 
