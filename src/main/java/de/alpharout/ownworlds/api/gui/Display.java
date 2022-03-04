@@ -10,11 +10,16 @@ public class Display {
     private Inventory inventory;
     private View currentView;
     private Player player;
+    private DisplayExtension displayExtension;
 
     public Display(Player player, String name, int size) {
         this.player = player;
         this.size = size;
         this.inventory = Bukkit.createInventory(null, size, name);
+    }
+
+    public void setDisplayExtension(DisplayExtension displayExtension) {
+        this.displayExtension = displayExtension;
     }
 
     public void setView(View view) {
@@ -35,6 +40,7 @@ public class Display {
     }
 
     public Inventory getInventory() {
-        return inventory;
+        if (displayExtension != null) return displayExtension.processInventory(inventory);
+        else return inventory;
     }
 }

@@ -4,6 +4,7 @@ import de.alpharout.ownworlds.OwnWorlds;
 import de.alpharout.ownworlds.api.ItemComponent;
 import de.alpharout.ownworlds.api.gui.Display;
 import de.alpharout.ownworlds.api.gui.View;
+import de.alpharout.ownworlds.api.gui.extensions.WhiteBottomTopExtension;
 import de.alpharout.ownworlds.utils.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -59,6 +60,7 @@ public class SwitcherComponent extends ItemComponent {
 
     private void openJavaGUI(Player player) {
         Display display = new Display(player, "§7» §cSwitcher", 3*9);
+        display.setDisplayExtension(new WhiteBottomTopExtension());
         display.setView(View.getView("main"));
         player.openInventory(display.getInventory());
     }

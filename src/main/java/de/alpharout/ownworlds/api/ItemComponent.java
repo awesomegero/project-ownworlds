@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -48,7 +49,12 @@ public class ItemComponent {
     }
 
     public ItemStack getItemStack(Player player) {
-        return null;
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(itemName);
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
     }
 
     public void handleInventoryClick(InventoryClickEvent clickEvent) {
