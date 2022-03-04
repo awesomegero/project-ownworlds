@@ -10,11 +10,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class OwnWorlds extends JavaPlugin {
     private static OwnWorlds PLUGIN;
     private static ConfigManager CONFIGMANAGER;
+    private static boolean DEBUG;
 
     @Override
     public void onEnable() {
         PLUGIN = this;
+        saveDefaultConfig();
         CONFIGMANAGER = new ConfigManager();
+        DEBUG = getConfig().getBoolean("debug-mode");
 
         CONFIGMANAGER.load();
 
@@ -33,5 +36,9 @@ public class OwnWorlds extends JavaPlugin {
 
     public static ConfigManager getConfigManager() {
         return CONFIGMANAGER;
+    }
+
+    public static boolean isDebug() {
+        return DEBUG;
     }
 }

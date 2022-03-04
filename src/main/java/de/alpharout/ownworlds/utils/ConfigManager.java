@@ -20,6 +20,7 @@ public class ConfigManager {
         messageConf = new YamlConfiguration();
         try {
             messageConf.load(messageFile);
+            Log.debug("Loaded " + messageFile.getName() + " configuration.");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidConfigurationException e) {
