@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.geysermc.cumulus.SimpleForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 
 public class SwitcherComponent extends ItemComponent {
@@ -66,6 +67,11 @@ public class SwitcherComponent extends ItemComponent {
     }
 
     private void openBedrockGUI(Player player) {
-        player.sendMessage("§cThe Bedrock GUI is not implemented yet!");
+        SimpleForm.Builder builder = SimpleForm.builder()
+                .title(itemName)
+                .button("Join Public World")
+                .button("Join Your World")
+                .button("Join Private World");
+        FloodgateApi.getInstance().getPlayer(player.getUniqueId()).sendForm(builder);
     }
 }
