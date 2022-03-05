@@ -7,3 +7,9 @@ authors:
   - alphaR0ut
   - CraftAgain
 website: fiverr.com/alphar0ut
+
+softdepend:
+  - floodgate
+
+libraries:
+  - org.mariadb.jdbc:mariadb-java-client:2.7.3

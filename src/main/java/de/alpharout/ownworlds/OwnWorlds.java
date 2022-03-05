@@ -8,12 +8,15 @@ import de.alpharout.ownworlds.listener.InteractListener;
 import de.alpharout.ownworlds.listener.InventoryClickListener;
 import de.alpharout.ownworlds.listener.JoinListener;
 import de.alpharout.ownworlds.utils.ConfigManager;
+import de.alpharout.ownworlds.utils.DatabaseManager;
+import de.alpharout.ownworlds.utils.Log;
 import de.alpharout.ownworlds.view.MainView;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class OwnWorlds extends JavaPlugin {
     private static OwnWorlds PLUGIN;
     private static ConfigManager CONFIGMANAGER;
+    private static DatabaseManager DATABASEMANAGER;
     private static boolean DEBUG;
 
     @Override
@@ -21,9 +24,23 @@ public class OwnWorlds extends JavaPlugin {
         PLUGIN = this;
         saveDefaultConfig();
         CONFIGMANAGER = new ConfigManager();
+        CONFIGMANAGER.load();
+        DATABASEMANAGER = new DatabaseManager(
+                CONFIGMANAGER.getDatabaseConf().getString("hostname"),
+                CONFIGMANAGER.getDatabaseConf().getInt("port"),
+                CONFIGMANAGER.getDatabaseConf().getString("database"),
+                CONFIGMANAGER.getDatabaseConf().getString("username"),
+                CONFIGMANAGER.getDatabaseConf().getString("password")
+        );
         DEBUG = getConfig().getBoolean("debug-mode");
 
-        CONFIGMANAGER.load();
+        if (!this.getServer().getPluginManager().isPluginEnabled("floodgate")) {
+            Log.error("Floodgate is not installed on this server. Please install it!");
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        DATABASEMANAGER.connect();
 
         this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new DropListener(), this);
@@ -52,6 +69,10 @@ public class OwnWorlds extends JavaPlugin {
 
     public static ConfigManager getConfigManager() {
         return CONFIGMANAGER;
+    }
+
+    public static DatabaseManager getDatabaseManager() {
+        return DATABASEMANAGER;
     }
 
     public static boolean isDebug() {
