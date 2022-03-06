@@ -5,8 +5,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class User {
+    private static final HashMap<UUID, User> USERMAP = new HashMap<>();
+
+    public static HashMap<UUID, User> getUserMap() {
+        return USERMAP;
+    }
+
     /*
     Bukkit Player, but with additional OwnWorlds information like Level.
      */
