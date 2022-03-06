@@ -25,7 +25,7 @@ public class DatabaseManager {
     }
 
     public void connect() {
-        String url = "jdbc:mariadb://" + host + "/" + database;
+        String url = "jdbc:mariadb://" + host + ":" + port + "/" + database;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
         } catch (ClassNotFoundException e) {
