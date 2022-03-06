@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseManager {
@@ -38,10 +39,36 @@ public class DatabaseManager {
                 try {
                     connection = DriverManager.getConnection(url, username, password);
                     Log.debug("Connected to database!");
+                    initTables();
                 } catch (SQLException e) {
                     Log.error("Couldn't connect to database! Check the credentials in database.yml");
                 }
             }
         });
+    }
+
+    private void initTables() {
+        Bukkit.getScheduler().runTaskAsynchronously(OwnWorlds.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    PreparedStatement preparedStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement(
+                            "CREATE TABLE IF NOT EXISTS ownworlds_level (" +
+                                    "levelUUID varchar(255), " +
+                                    "ownerUUID varchar(255), " +
+                                    "serverName varchar(255)" +
+                                    ");"
+                    );
+                    preparedStatement.executeUpdate();
+                } catch (SQLException sqle) {
+                    Log.error("Error sending statement to database! Couldn't create ownworlds_level table in database.");
+                }
+
+            }
+        });
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }
