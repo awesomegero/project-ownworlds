@@ -1,6 +1,7 @@
 package de.alpharout.ownworlds.api.gui;
 
 import de.alpharout.ownworlds.api.ItemComponent;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
@@ -25,7 +26,7 @@ public class View {
         componentMap.put(position, component);
     }
 
-    public HashMap<Integer, ItemComponent> getComponentMap() {
+    public HashMap<Integer, ItemComponent> getComponentMap(Player player) {
         return componentMap;
     }
 }

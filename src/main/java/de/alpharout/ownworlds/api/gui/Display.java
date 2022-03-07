@@ -25,13 +25,13 @@ public class Display {
     public void setView(View view) {
         this.currentView = view;
 
-        if (view.getComponentMap().size() > inventory.getSize()) {
+        if (view.getComponentMap(player).size() > inventory.getSize()) {
             Log.error("Tried to set a too big view to a display.");
             return;
         }
 
-        for (int position : view.getComponentMap().keySet()) {
-            inventory.setItem(position, view.getComponentMap().get(position).getItemStack(player));
+        for (int position : view.getComponentMap(player).keySet()) {
+            inventory.setItem(position, view.getComponentMap(player).get(position).getItemStack(player));
         }
     }
 
