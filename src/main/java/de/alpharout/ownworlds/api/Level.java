@@ -1,7 +1,11 @@
 package de.alpharout.ownworlds.api;
 
+import de.alpharout.ownworlds.OwnWorlds;
+import de.alpharout.ownworlds.utils.DatabaseManager;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 import java.util.UUID;
 
@@ -18,13 +22,16 @@ public class Level {
      */
     public Level(UUID uuid, User user) {
         this.uuid = uuid;
+        this.user = user;
     }
 
     public void create(World.Environment environment) {
-        // TODO: Add world creation logic
-    }
 
-    private void addDatabaseEntry() {
+        WorldCreator worldCreator = new WorldCreator(uuid.toString());
+        worldCreator.environment(environment);
+        world = worldCreator.createWorld();
+
+        OwnWorlds.getDatabaseManager().createWorldEntry(uuid, user.getUUID(), OwnWorlds.getCurrentServerName());
 
     }
 

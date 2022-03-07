@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class User {
     /*
@@ -27,6 +28,10 @@ public class User {
         }
         levels.add(level);
         return true;
+    }
+
+    public UUID getUUID(){
+        return this.offlinePlayer.getUniqueId();
     }
 
     public Level[] getLevels() {

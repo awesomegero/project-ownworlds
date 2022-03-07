@@ -7,8 +7,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.UUID;
 
 public class DatabaseManager {
+
     private String host;
     private int port;
     private String database;
@@ -33,42 +36,93 @@ public class DatabaseManager {
             return;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(OwnWorlds.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    connection = DriverManager.getConnection(url, username, password);
-                    Log.debug("Connected to database!");
-                    initTables();
-                } catch (SQLException e) {
-                    Log.error("Couldn't connect to database! Check the credentials in database.yml");
-                }
-            }
-        });
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+            Log.debug("Connected to database!");
+            initTables();
+        } catch (SQLException e) {
+            Log.error("Couldn't connect to database! Check the credentials in database.yml");
+        }
     }
 
     private void initTables() {
+        try {
+            PreparedStatement worldTableStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS ownworlds_level (" +
+                            "levelUUID varchar(255), " +
+                            "ownerUUID varchar(255), " +
+                            "serverName varchar(255)" +
+                            ");"
+            );
+            worldTableStatement.executeUpdate();
+
+            PreparedStatement serverTableStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS servers (" +
+                            "serverName varchar(255) " +
+                            ");"
+            );
+            serverTableStatement.executeUpdate();
+
+        } catch (SQLException sqle) {
+            Log.error("Error sending statement to database! Couldn't create default tables in database.");
+        }
+    }
+
+
+    public void createWorldEntry(UUID levelUUID, UUID ownerUUID, String serverName) {
+
         Bukkit.getScheduler().runTaskAsynchronously(OwnWorlds.getInstance(), new Runnable() {
+
+            @Override
+            public void run() {
+
+                try {
+                    PreparedStatement preparedStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement(
+                            "INSERT INTO ownworlds_level (" +
+                                    "levelUUID, ownerUUID, serverName)" +
+                                    " values (?, ?, ?);"
+                    );
+
+                    preparedStatement.setString(1, levelUUID.toString());
+                    preparedStatement.setString(2, ownerUUID.toString());
+                    preparedStatement.setString(3, serverName);
+
+                    preparedStatement.executeUpdate();
+
+                } catch (SQLException sqle) {
+                    Log.error("Error sending statement to database! Couldn't create entry for world -> " + levelUUID.toString());
+                }
+
+            }
+        });
+
+    }
+
+    public void registerServer(String serverName) {
+
+        Bukkit.getScheduler().runTaskAsynchronously(OwnWorlds.getInstance(), new Runnable() {
+
             @Override
             public void run() {
                 try {
-                    PreparedStatement preparedStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement(
-                            "CREATE TABLE IF NOT EXISTS ownworlds_level (" +
-                                    "levelUUID varchar(255), " +
-                                    "ownerUUID varchar(255), " +
-                                    "serverName varchar(255)" +
-                                    ");"
-                    );
+                    PreparedStatement preparedStatement = OwnWorlds.getDatabaseManager().getConnection().prepareStatement("INSERT INTO servers (serverName) values (?);");
+
+                    preparedStatement.setString(1, serverName);
+
                     preparedStatement.executeUpdate();
+                    Log.info("Server " + serverName + " was registered in database");
                 } catch (SQLException sqle) {
-                    Log.error("Error sending statement to database! Couldn't create ownworlds_level table in database.");
+                    Log.error("Error sending statement to database! Couldn't register Server -> " + serverName);
                 }
 
             }
         });
     }
+
 
     public Connection getConnection() {
         return connection;
     }
+
+
 }

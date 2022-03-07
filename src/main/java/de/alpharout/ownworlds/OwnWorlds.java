@@ -1,5 +1,8 @@
 package de.alpharout.ownworlds;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import de.alpharout.ownworlds.api.ItemComponent;
 import de.alpharout.ownworlds.api.gui.View;
 import de.alpharout.ownworlds.components.*;
@@ -11,17 +14,22 @@ import de.alpharout.ownworlds.utils.ConfigManager;
 import de.alpharout.ownworlds.utils.DatabaseManager;
 import de.alpharout.ownworlds.utils.Log;
 import de.alpharout.ownworlds.view.MainView;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
-public class OwnWorlds extends JavaPlugin {
+public class OwnWorlds extends JavaPlugin implements PluginMessageListener {
+
     private static OwnWorlds PLUGIN;
     private static ConfigManager CONFIGMANAGER;
     private static DatabaseManager DATABASEMANAGER;
     private static boolean DEBUG;
+    private static String CURRENT_SERVER_NAME;
 
     @Override
     public void onEnable() {
         PLUGIN = this;
+
         saveDefaultConfig();
         CONFIGMANAGER = new ConfigManager();
         CONFIGMANAGER.load();
@@ -41,6 +49,15 @@ public class OwnWorlds extends JavaPlugin {
         }
 
         DATABASEMANAGER.connect();
+
+        //BungeeCord Stuff
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+
+        //The BungeeCord name of the current server
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("GetServer");
+        this.getServer().sendPluginMessage(this, "BungeeCord", out.toByteArray());
 
         this.getServer().getPluginManager().registerEvents(new JoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new DropListener(), this);
@@ -75,7 +92,35 @@ public class OwnWorlds extends JavaPlugin {
         return DATABASEMANAGER;
     }
 
+    public static String getCurrentServerName() {
+        return CURRENT_SERVER_NAME;
+    }
+
     public static boolean isDebug() {
         return DEBUG;
+    }
+
+
+
+
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+
+        if(channel.equals("BungeeCord")){
+
+            String subChannel = in.readUTF();
+
+            if(subChannel.equals("GetServer")){
+                CURRENT_SERVER_NAME = in.readUTF();
+
+                //Instantly after retrieving the server name, the server gets registered via database
+                DATABASEMANAGER.registerServer(CURRENT_SERVER_NAME);
+            }
+
+        }
+
     }
 }
